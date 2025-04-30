@@ -1,5 +1,13 @@
-CREATE DATABASE supermercado;
+
+DROP TABLE IF EXISTS itens_venda;
+DROP TABLE IF EXISTS vendas;
+DROP TABLE IF EXISTS produtos;
+DROP TABLE IF EXISTS colaboradores;
+DROP TABLE IF EXISTS clientes;
+
+CREATE DATABASE IF NOT EXISTS supermercado;
 USE supermercado;
+
 
 CREATE TABLE clientes (
     id_cliente INT AUTO_INCREMENT PRIMARY KEY,
@@ -8,7 +16,18 @@ CREATE TABLE clientes (
     telefone VARCHAR(15),
     email VARCHAR(100),
     data_nascimento DATE
-);
+) ENGINE=InnoDB;
+
+
+CREATE TABLE colaboradores (
+    id_colaborador INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100),
+    cpf CHAR(11) UNIQUE,
+    cargo VARCHAR(50),
+    data_admissao DATE,
+    turno VARCHAR(20)
+) ENGINE=InnoDB;
+
 
 CREATE TABLE produtos (
     id_produto INT AUTO_INCREMENT PRIMARY KEY,
@@ -18,16 +37,8 @@ CREATE TABLE produtos (
     estoque INT,
     validade DATE,
     cod_barras VARCHAR(20) UNIQUE
-);
+) ENGINE=InnoDB;
 
-CREATE TABLE colaboradores (
-    id_colaborador INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    cpf CHAR(11) UNIQUE,
-    cargo VARCHAR(50),
-    data_admissao DATE,
-    turno VARCHAR(20)
-);
 
 CREATE TABLE vendas (
     id_venda INT AUTO_INCREMENT PRIMARY KEY,
@@ -38,7 +49,8 @@ CREATE TABLE vendas (
     total DECIMAL(10,2),
     FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente),
     FOREIGN KEY (id_colaborador) REFERENCES colaboradores(id_colaborador)
-);
+) ENGINE=InnoDB;
+
 
 CREATE TABLE itens_venda (
     id_item INT AUTO_INCREMENT PRIMARY KEY,
@@ -48,4 +60,4 @@ CREATE TABLE itens_venda (
     preco_unitario DECIMAL(10,2),
     FOREIGN KEY (id_venda) REFERENCES vendas(id_venda),
     FOREIGN KEY (id_produto) REFERENCES produtos(id_produto)
-);
+) ENGINE=InnoDB;
